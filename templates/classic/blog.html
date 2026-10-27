@@ -4,12 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="light" />
-  <meta name="description" content="文章详情。" />
+  <meta name="description" content="全部文章。" />
   <title>文章 · 我的个人空间</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="assets/site-core.css?v=1" />
   <link rel="stylesheet" href="assets/styles.css?v=1" />
 </head>
-<body data-page="article">
+<body data-page="blog">
   <header class="site-header">
     <a class="brand" href="index.html">
       <span class="brand__mark" data-profile="initial">塔</span>
@@ -23,20 +24,22 @@
   </header>
 
   <main class="wrap">
-    <a class="back-link" href="blog.html">← 返回文章列表</a>
-    <article class="article">
-      <header class="article__head">
-        <h1 id="article-title">文章</h1>
-        <p id="article-meta" class="article__meta"></p>
-      </header>
-      <p id="article-status" class="status">加载中…</p>
-      <div id="article-content" class="content"></div>
-    </article>
-
-    <section class="comments">
-      <h2>留言</h2>
-      <div id="comments-list"></div>
+    <section class="page-head">
+      <p class="eyebrow">ARTICLES</p>
+      <h1>文章</h1>
+      <p class="lede">在门户发布的公开文章会自动出现在这里。</p>
     </section>
+
+    <div class="filters" id="category-filters">
+      <button type="button" class="is-active" data-category="ALL">全部</button>
+      <button type="button" data-category="TECH">技术</button>
+      <button type="button" data-category="PROJECT">项目</button>
+      <button type="button" data-category="LIFE">生活</button>
+    </div>
+
+    <p id="list-status" class="status">加载中…</p>
+    <div id="post-list" class="post-list"></div>
+    <button id="load-more" class="button button--ghost" type="button" hidden>加载更多</button>
   </main>
 
   <footer class="site-footer">
@@ -44,6 +47,7 @@
   </footer>
 
   <script src="vendor/markdown-it.min.js?v=1"></script>
+  <script src="assets/site-core.js?v=1"></script>
   <script src="assets/app.js?v=1"></script>
 </body>
 </html>

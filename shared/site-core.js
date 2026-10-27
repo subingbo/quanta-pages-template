@@ -16,8 +16,9 @@
     return SLUG_PATTERN.test(first) ? first : ''
   }
 
-  const SLUG = resolveSlug()
-  const API_BASE = SLUG ? API_ROOT + SLUG : ''
+  const slug = resolveSlug()
+  const API_BASE = slug ? API_ROOT + slug : ''
+  const hasSlug = Boolean(slug)
 
   function text(value) {
     return value == null ? '' : String(value).trim()
@@ -169,10 +170,11 @@
     renderLinks(profile)
   }
 
-  function applyTitle(profile, page) {
+  function applyTitle(profile) {
+    const page = document.body.getAttribute('data-page')
     const name = displayName(profile)
     if (page === 'index') {
-      document.title = name === FALLBACK_NAME ? FALLBACK_NAME : name + ' · 个人网站'
+      document.title = name === FALLBACK_NAME ? name : name + ' · 个人网站'
     } else if (page === 'blog') {
       document.title = '文章 · ' + name
     } else if (page === 'about') {
@@ -422,17 +424,51 @@
     }
   }
 
-  document.addEventListener('DOMContentLoaded', async function () {
-    markActiveNav()
-    if (!SLUG) {
-      showFatal('无法识别站点标识：请通过 {你的标识}.page.quantacenter.com 访问，或在地址后加 ?slug=你的标识。')
-      return
-    }
-    const profile = await loadProfile()
-    const page = document.body.getAttribute('data-page')
-    applyTitle(profile, page)
-    if (page === 'index') await initIndex()
-    else if (page === 'blog') await initBlog()
-    else if (page === 'article') await initArticle(profile)
-  })
+  function start() {
+    document.addEventListener('DOMContentLoaded', async function () {
+      markActiveNav()
+      if (!hasSlug) {
+        showFatal('无法识别站点标识：请通过 {你的标识}.page.quantacenter.com 访问，或在地址后加 ?slug=你的标识。')
+        return
+      }
+      const profile = await loadProfile()
+      applyTitle(profile)
+      const page = document.body.getAttribute('data-page')
+      if (page === 'index') await initIndex()
+      else if (page === 'blog') await initBlog()
+      else if (page === 'article') await initArticle(profile)
+    })
+  }
+
+  window.QuantaSite = {
+    hasSlug,
+    slug,
+    API_BASE,
+    start,
+    text,
+    showFatal,
+    showStatus,
+    fetchApi,
+    displayName,
+    commentName,
+    firstChar,
+    letterAvatar,
+    createAvatar,
+    safeHttpUrl,
+    renderProfile,
+    loadProfile,
+    renderMarkdown,
+    formatDate,
+    categoryLabel,
+    postUrl,
+    renderPostCard,
+    renderPostRow,
+    fetchAllPosts,
+    renderComment,
+    initIndex,
+    initBlog,
+    initArticle,
+    markActiveNav,
+    applyTitle,
+  }
 })()

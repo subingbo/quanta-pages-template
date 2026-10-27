@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light" />
+  <meta name="description" content="全部文章。" />
+  <title>文章 · 我的个人空间</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="assets/site-core.css?v=1" />
+  <link rel="stylesheet" href="assets/styles.css?v=1" />
+</head>
+<body data-page="blog">
+  <header class="site-header">
+    <a class="brand" href="index.html">
+      <span class="brand__mark" data-profile="initial">塔</span>
+      <span class="brand__name" data-profile="name">我的个人空间</span>
+    </a>
+    <nav class="nav">
+      <a href="index.html">首页</a>
+      <a href="blog.html">文章</a>
+      <a href="about.html">关于</a>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <section class="page-head">
+      <p class="eyebrow">ARTICLES</p>
+      <h1>文章</h1>
+      <p class="lede">在门户发布的公开文章会自动出现在这里。</p>
+    </section>
+
+    <div class="filters" id="category-filters">
+      <button type="button" class="is-active" data-category="ALL">全部</button>
+      <button type="button" data-category="TECH">技术</button>
+      <button type="button" data-category="PROJECT">项目</button>
+      <button type="button" data-category="LIFE">生活</button>
+    </div>
+
+    <p id="list-status" class="status">加载中…</p>
+    <div id="post-list" class="post-list"></div>
+    <button id="load-more" class="button button--ghost" type="button" hidden>加载更多</button>
+  </main>
+
+  <footer class="site-footer">
+    Powered by <a href="https://www.quantacenter.com" target="_blank" rel="noopener">Quanta Pages</a>
+  </footer>
+
+  <script src="vendor/markdown-it.min.js?v=1"></script>
+  <script src="assets/site-core.js?v=1"></script>
+  <script src="assets/app.js?v=1"></script>
+</body>
+</html>

@@ -1,65 +1,104 @@
-# Quanta Pages 官方模板
+# Quanta Pages 官方模板（monorepo）
 
-Quanta 成员的通用个人网站模板：首页、文章列表、文章详情（含留言）、关于，共四个页面。
+Quanta 成员的个人网站模板集合。每套模板都是纯静态 HTML/CSS/JS，共四个页面：首页、文章列表、文章详情（含留言）、关于。
 
-- **不需要 GitHub 账号**：在门户「个人网站」页面点击「一键创建并部署」，系统会自动把你的站点指向本模板并完成首次部署。
-- **内容实时同步**：文章、留言和你的公开资料都来自 Quanta 门户的开放 API，写文章后刷新页面即可看到，不需要改代码或重新部署。
-- **无构建步骤**：纯静态 HTML/CSS/JS，仓库根目录就是发布目录。
+- **门户一键创建**：在 `https://www.quantacenter.com` → 塔员门户 → 个人网站，选择一套模板即可创建，不需要 GitHub 账号。
+- **内容实时同步**：文章、留言和公开资料都来自 Quanta 门户的开放 API，发文章/改资料后刷新页面即可看到。
+- **无构建步骤**：每套模板目录是自包含的静态站点，Pages 直接把该目录作为 `publishDir` 发布。
 
-## 使用方式
+## 模板一览
 
-### 方式一：门户一键创建（推荐）
+| key | 名称 | 风格 | 发布目录 | 适合 |
+| --- | --- | --- | --- | --- |
+| `classic` | 经典浅色 | 白底、橙色强调、圆角卡片、双列网格 | `/templates/classic` | 技术笔记、日常记录 |
+| `paper` | 纸感文字 | 米白纸底、衬线标题、窄栏、编号文章 | `/templates/paper` | 长文写作、读书笔记 |
+| `magazine` | 杂志作品集 | 奶油底、超大姓名、粗边框卡片、分类色块 | `/templates/magazine` | 项目、作品集、活动 |
+| `terminal` | 终端深色 | 深色背景、等宽字体、绿色/琥珀、prompt 风格 | `/templates/terminal` | 极客/系统/网络内容 |
 
-1. 登录 `https://www.quantacenter.com` → 塔员门户 → 个人网站。
-2. 点击「用官方模板，一分钟上线」，可选填站点标识，提交即可。
-3. 首次部署完成后访问 `https://{你的标识}.page.quantacenter.com`。
+四套模板共用同一套页面结构与数据逻辑，仅视觉不同；切换模板不会改变文章和资料内容。
 
-模板会展示你在「个人资料」里填写的：
-
-- 社区昵称、头像
-- 一句话介绍（headline）、个人简介（bio）
-- 技能标签
-- GitHub / 个人主页链接
-- 联系邮箱（仅当你勾选「公开联系邮箱」）
-
-不会展示真实姓名、学号、班级、专业、部门、职位、届次或登录邮箱。
-
-### 方式二：基于本模板改版式
-
-1. 在 GitHub 点击本仓库右上角的 **Use this template**，创建你自己的公开仓库（也可以直接 fork）。
-2. 修改 `assets/styles.css`、页面 HTML 或 `assets/app.js`。
-3. 回到门户「个人网站」，把仓库地址改成你的仓库，分支 `main`，发布目录 `/`，保存后会按新配置重新部署。
-4. 之后每次推送都会由 Pages 轮询自动发布。
-
-> 注意：Pages 只发布**已经构建好的静态文件**，不执行构建脚本。如果你用 Vite/React 等框架改版，请把构建产物放到发布分支/目录后再配置。
-
-## 页面与文件
-
-| 文件 | 说明 |
-| --- | --- |
-| `index.html` | 首页：资料 hero + 最新 6 篇文章 |
-| `blog.html` | 文章列表：分类筛选 + 加载更多 |
-| `article.html` | 文章详情：`?id=postId`，Markdown + 留言 |
-| `about.html` | 关于：简介、技能、公开链接 |
-| `assets/styles.css` | 全站样式（浅色简约、橙色强调） |
-| `assets/app.js` | slug 解析、资料/文章/留言渲染、首字头像回退 |
-| `vendor/markdown-it.min.js` | 自托管 Markdown 渲染器，不依赖 CDN |
-
-## 站点标识如何确定
-
-页面通过域名第一段识别站点标识：
+## 仓库结构
 
 ```
-https://your-name.page.quantacenter.com/  →  slug = your-name
+README.md
+package.json                 # 仅 sync / check 脚本，无运行时依赖
+index.html                   # 兼容入口：默认跳转到 templates/classic/
+scripts/
+  sync-shared.mjs            # 把 shared 复制进每套模板
+  check-shared.mjs           # 校验复制文件与 shared 一致
+shared/
+  layout/                    # 四页共享 HTML 骨架
+  site-core.js               # slug/API/资料/文章/留言/头像/Markdown
+  site-core.css              # 共享结构样式
+  app.js                     # 启动入口：window.QuantaSite.start()
+  markdown-it.min.js         # 唯一 Markdown 渲染器源
+templates/
+  classic/  paper/  magazine/  terminal/
+    index.html blog.html article.html about.html
+    assets/site-core.js      # 由 sync 生成
+    assets/site-core.css     # 由 sync 生成
+    assets/app.js            # 由 sync 生成
+    assets/styles.css        # 模板专属视觉（源文件）
+    vendor/markdown-it.min.js
+    favicon.svg              # 模板专属图标
+    README.md                # 模板说明
 ```
 
-本地预览时可以加查询参数：
+**只有 `assets/styles.css`、`favicon.svg`、`README.md` 是每套模板独有的源文件**；页面 HTML、`site-core.*`、`app.js`、`markdown-it` 都由 `shared/` 同步生成并提交，Pages 部署时无需构建。
+
+## 本地预览
+
+```bash
+npm run sync
+python -m http.server 8099
+```
+
+然后打开：
+
+- `http://127.0.0.1:8099/templates/classic/index.html?slug=sususu`
+- `http://127.0.0.1:8099/templates/paper/blog.html?slug=sususu`
+- `http://127.0.0.1:8099/templates/magazine/about.html?slug=sususu`
+- `http://127.0.0.1:8099/templates/terminal/article.html?slug=sususu&id=13`
+
+开放 API 的 CORS 只放行 `*.page.quantacenter.com`，本地 `localhost` 请求会被浏览器拦截；本地适合看静态布局，接口联调请部署后测试。
+
+## 修改共享代码
+
+```bash
+# 1. 修改 shared/ 下的文件
+# 2. 同步到四套模板
+npm run sync
+# 3. 确认没有遗漏
+npm run check
+# 4. 提交并推送
+```
+
+`npm run check` 会逐字节比较每套模板中的生成文件与 `shared/`；不一致会以非零退出码失败。
+
+## 新增一套模板
+
+1. 新建 `templates/<key>/`，放入 `assets/styles.css`、`favicon.svg`、`README.md`。
+2. 运行 `npm run sync`，生成四个页面、共享脚本和 vendor。
+3. 在门户 `Quanta-admin-web/src/api/portal/pages.js` 的 `PAGE_TEMPLATES` 中增加一项（key、名称、描述、`publishDir: '/templates/<key>'`、主题色）。
+4. 本地预览 + Playwright 验收后提交。
+
+## 部署与发布目录
+
+门户创建站点时会把 `repoUrl` 指向本仓库、`branch` 设为 `main`、`publishDir` 设为所选模板目录：
 
 ```
-http://127.0.0.1:8080/index.html?slug=your-name
+repoUrl   = https://github.com/subingbo/quanta-pages-template
+branch    = main
+publishDir = /templates/classic | /templates/paper | /templates/magazine | /templates/terminal
 ```
 
-但开放 API 的 CORS 只放行 `*.page.quantacenter.com`，本地 `localhost` 请求会被浏览器拦截；本地只适合看静态布局，接口联调请部署后测试。
+仓库根目录的 `index.html` 是一个兼容入口：如果早期站点仍使用 `publishDir=/`，会跳转到 `/templates/classic/`，避免旧站点失效。新站点应直接使用模板子目录。
+
+## 更新策略
+
+- 本仓库任一提交都会让所有使用官方模板的站点在轮询周期（约 5 分钟）内重新部署；四套模板共用同一个 commit。
+- 如果你 fork 到自己的仓库，模板后续更新不会影响你，按自己的节奏维护。
+- 不要把个人信息或文章内容写进仓库；所有个人数据都应由 API 实时读取。
 
 ## 使用的开放 API
 
@@ -70,13 +109,7 @@ http://127.0.0.1:8080/index.html?slug=your-name
 | `GET /open/pages/{slug}/posts/{postId}` | 文章详情（Markdown） |
 | `GET /open/pages/{slug}/posts/{postId}/comments` | 留言 |
 
-接口匿名只读，无需 Token；限流为每 IP 每接口 60 秒 120 次。
-
-## 更新策略
-
-- 本模板更新后，所有使用模板的站点会在 Pages 轮询周期（约 5 分钟）内自动重新部署。
-- 如果你 fork 了自己的仓库，模板的后续更新不会影响你，按自己的节奏维护即可。
-- 本仓库不要放任何个人信息或文章内容；所有个人数据都应由 API 实时读取。
+接口匿名只读，无需 Token；限流为每 IP 每接口 60 秒 120 次。公开资料只含社区昵称、头像、headline、bio、技能、GitHub/网站和勾选公开的邮箱，不含实名、学号、部门等信息。
 
 ## 维护
 

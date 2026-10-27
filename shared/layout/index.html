@@ -4,12 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="light" />
-  <meta name="description" content="关于我。" />
-  <title>关于 · 我的个人空间</title>
+  <meta name="description" content="Quanta 成员的个人空间：文章、笔记与项目。" />
+  <title>我的个人空间</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="assets/site-core.css?v=1" />
   <link rel="stylesheet" href="assets/styles.css?v=1" />
 </head>
-<body data-page="about">
+<body data-page="index">
   <header class="site-header">
     <a class="brand" href="index.html">
       <span class="brand__mark" data-profile="initial">塔</span>
@@ -23,25 +24,22 @@
   </header>
 
   <main class="wrap">
-    <section class="about-hero">
+    <section class="hero">
       <div class="hero__avatar" data-profile="avatar"></div>
-      <p class="eyebrow">ABOUT</p>
-      <h1>关于我</h1>
-      <p class="lede" data-profile="about-bio">这里是 Quanta 成员的个人空间，用来记录学习、项目和生活。</p>
+      <p class="eyebrow">QUANTA MEMBER · PERSONAL SITE</p>
+      <h1 data-profile="headline">写代码，也写下为什么。</h1>
+      <p class="lede" data-profile="bio">这里是 Quanta 成员的个人空间，文章与留言由门户实时提供。</p>
       <ul class="chips" data-profile="skills" hidden></ul>
       <div class="links" data-profile="links" hidden></div>
     </section>
 
     <section class="section">
-      <article class="about-card">
-        <h2>这个站点怎么工作</h2>
-        <p>这个站点由 Quanta Pages 托管在独立子域名上。页面本身是静态文件，文章、留言和资料在每次打开时由 Quanta 门户的开放 API 实时读取。</p>
-        <p>所以：在门户写文章、修改资料或收到留言，刷新页面就能看到。</p>
-      </article>
-      <article class="about-card">
-        <h2>找到我</h2>
-        <p>如果设置了公开链接，会显示在页面顶部；也可以在 Quanta 门户找到我。</p>
-      </article>
+      <div class="section__head">
+        <h2>最新文章</h2>
+        <a href="blog.html">全部文章 →</a>
+      </div>
+      <div id="latest" class="post-grid"></div>
+      <p id="latest-status" class="status">加载中…</p>
     </section>
   </main>
 
@@ -50,6 +48,7 @@
   </footer>
 
   <script src="vendor/markdown-it.min.js?v=1"></script>
+  <script src="assets/site-core.js?v=1"></script>
   <script src="assets/app.js?v=1"></script>
 </body>
 </html>
